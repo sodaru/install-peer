@@ -1,6 +1,6 @@
 {
   "name": "install-peer",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "Install all peer dependencies required by current package",
   "module": "dist/esm/install.js",
   "main": "dist/index.js",
