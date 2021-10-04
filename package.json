@@ -1,0 +1,53 @@
+{
+  "name": "install-peer",
+  "version": "0.0.0",
+  "description": "Install all peer dependencies required by current package",
+  "module": "dist/esm/install.js",
+  "main": "dist/index.js",
+  "files": [
+    "bin",
+    "dist"
+  ],
+  "bin": {
+    "install-peer": "./dist/index.js"
+  },
+  "typings": "dist/esm/install.d.ts",
+  "scripts": {
+    "clean": "npx rimraf dist",
+    "prettier": "npx prettier --check --ignore-unknown ./**/*",
+    "eslint": "npx eslint ./",
+    "bundle": "npx esbuild --bundle ./src/index.ts --outfile=dist/index.js --platform=node",
+    "esm": "npx tsc --project tsconfig.esm.json",
+    "build": "npm run prettier && npm run eslint && npm run clean && npm run bundle && npm run esm",
+    "prepack": "npm run build",
+    "postversion": "git push --follow-tags"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sodaru/install-peer.git"
+  },
+  "keywords": [
+    "peer",
+    "peerDependencies",
+    "install-peerdeps",
+    "npm-install-peers",
+    "install-peer-dependencies"
+  ],
+  "author": "Raghavendra K R <raghavendra@sodaru.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/sodaru/install-peer/issues"
+  },
+  "homepage": "https://github.com/sodaru/install-peer#readme",
+  "devDependencies": {
+    "@types/node": "^16.10.2",
+    "@typescript-eslint/eslint-plugin": "^4.28.2",
+    "@typescript-eslint/parser": "^4.28.2",
+    "esbuild": "^0.13.3",
+    "eslint": "^7.30.0",
+    "eslint-plugin-import": "^2.23.4",
+    "prettier": "^2.3.2",
+    "rimraf": "^3.0.2",
+    "typescript": "^4.4.3"
+  }
+}

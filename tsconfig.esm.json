@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "outDir": "dist/esm",
+    "declaration": true,
+    "module": "ES6",
+    "target": "ES5",
+    "rootDir": "./src",
+    "lib": ["ESNext"],
+    "esModuleInterop": true,
+    "moduleResolution": "Node"
+  },
+  "include": ["src/install.ts"]
+}
