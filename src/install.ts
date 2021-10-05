@@ -1,6 +1,9 @@
 import { spawn } from "child_process";
 
-const ls = (dir: string): Promise<{ problems?: string[] }> => {
+const ls = (
+  dir: string,
+  env: Record<string, string> = {}
+): Promise<{ problems?: string[] }> => {
   return new Promise((resolve, reject) => {
     const stdOutData: string[] = [];
     const childProcess = spawn(
@@ -9,7 +12,8 @@ const ls = (dir: string): Promise<{ problems?: string[] }> => {
       {
         cwd: dir,
         windowsHide: true,
-        stdio: "pipe"
+        stdio: "pipe",
+        env: { ...process.env, ...env }
       }
     );
     childProcess.on("error", e => {
@@ -24,7 +28,8 @@ const ls = (dir: string): Promise<{ problems?: string[] }> => {
 
 const installDependencies = (
   dir: string,
-  dependencies: string[]
+  dependencies: string[],
+  env: Record<string, string> = {}
 ): Promise<void> => {
   return new Promise((resolve, reject) => {
     const childProcess = spawn(
@@ -33,7 +38,8 @@ const installDependencies = (
       {
         cwd: dir,
         windowsHide: true,
-        stdio: "inherit"
+        stdio: "inherit",
+        env: { ...process.env, ...env }
       }
     );
     childProcess.on("error", e => {
@@ -45,8 +51,11 @@ const installDependencies = (
   });
 };
 
-const getRequiredPeerDependencies = async (dir: string): Promise<string[]> => {
-  const lsResult = await ls(dir);
+const getRequiredPeerDependencies = async (
+  dir: string,
+  env: Record<string, string> = {}
+): Promise<string[]> => {
+  const lsResult = await ls(dir, env);
 
   const peerDependencies = lsResult.problems
     ? lsResult.problems
@@ -60,13 +69,14 @@ const getRequiredPeerDependencies = async (dir: string): Promise<string[]> => {
 };
 
 export const installAllPeerDependencies = async (
-  dir: string
+  dir: string,
+  env: Record<string, string> = {}
 ): Promise<void> => {
-  let requiredPeerDependecies = await getRequiredPeerDependencies(dir);
+  let requiredPeerDependecies = await getRequiredPeerDependencies(dir, env);
   while (requiredPeerDependecies.length > 0) {
     console.info("Installing ");
     console.info(requiredPeerDependecies);
-    await installDependencies(dir, requiredPeerDependecies);
-    requiredPeerDependecies = await getRequiredPeerDependencies(dir);
+    await installDependencies(dir, requiredPeerDependecies, env);
+    requiredPeerDependecies = await getRequiredPeerDependencies(dir, env);
   }
 };
