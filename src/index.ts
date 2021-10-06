@@ -1,14 +1,19 @@
-import { childProcess } from "./childProcess";
+import { childProcess, CommandResult } from "./childProcess";
 
 const ls = async (dir: string): Promise<{ problems?: string[] }> => {
-  const result = await childProcess(
-    dir,
-    process.platform === "win32" ? "npm.cmd" : "npm",
-    ["ls", "--json"],
-    true
-  );
+  let result: CommandResult = null;
+  try {
+    result = await childProcess(
+      dir,
+      process.platform === "win32" ? "npm.cmd" : "npm",
+      ["ls", "--json"],
+      true
+    );
+  } catch (r) {
+    result = r;
+  }
 
-  if (result.stdout) {
+  if (result?.stdout) {
     const jsonResult = JSON.parse(result.stdout) as { problems?: string[] };
     return jsonResult;
   } else {

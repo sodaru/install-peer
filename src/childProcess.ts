@@ -30,11 +30,9 @@ export const childProcess = (
     });
     childProcess.stdout?.on("data", chunk => {
       outChunks.push(chunk);
-      process.stdout.write(chunk);
     });
     childProcess.stderr?.on("data", chunk => {
       errorChunks.push(chunk);
-      process.stderr.write(chunk);
     });
     childProcess.on("exit", code => {
       const result: CommandResult = {};
