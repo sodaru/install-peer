@@ -1,11 +1,11 @@
 {
   "compilerOptions": {
-    "outDir": "dist/esm",
-    "declaration": true,
-    "module": "ES6",
+    "outDir": "dist",
+    "module": "CommonJS",
     "target": "ES5",
     "rootDir": "./src",
     "lib": ["ESNext"],
+    "esModuleInterop": true,
     "moduleResolution": "Node"
   },
   "include": ["src"],
