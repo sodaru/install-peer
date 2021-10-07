@@ -1,4 +1,4 @@
-import { childProcess, CommandResult } from "./childProcess";
+import { childProcess, ChildProcessError, CommandResult } from "./childProcess";
 
 const ls = async (dir: string): Promise<{ problems?: string[] }> => {
   let result: CommandResult = null;
@@ -7,17 +7,24 @@ const ls = async (dir: string): Promise<{ problems?: string[] }> => {
       dir,
       process.platform === "win32" ? "npm.cmd" : "npm",
       ["ls", "--json"],
-      true
+      { return: "on", show: "off" },
+      { return: "on", show: "off" }
     );
-  } catch (r) {
-    result = r;
+  } catch (e) {
+    if (e instanceof ChildProcessError) {
+      result = e.result;
+    } else {
+      throw e;
+    }
   }
 
   if (result?.stdout) {
     const jsonResult = JSON.parse(result.stdout) as { problems?: string[] };
     return jsonResult;
   } else {
-    throw new Error("No stdout from `npm ls --json`");
+    throw new Error(
+      `No stdout from 'npm ls --json'\n${result?.stdout}\n${result?.stderr}`
+    );
   }
 };
 
