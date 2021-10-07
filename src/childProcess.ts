@@ -14,7 +14,8 @@ export class ChildProcessError extends Error {
   private _result: CommandResult = null;
 
   constructor(result: CommandResult) {
-    super(result.stdout + "\nError" + result.stderr);
+    super(result.stdout + "\nError\n" + result.stderr);
+    Object.setPrototypeOf(this, new.target.prototype);
     this._result = result;
   }
 
