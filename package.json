@@ -2,24 +2,22 @@
   "name": "install-peer",
   "version": "1.2.2",
   "description": "Install all peer dependencies required by current package",
-  "module": "dist/esm/index.js",
-  "main": "dist/index.js",
+  "module": "dist/index.js",
   "files": [
     "bin",
     "dist"
   ],
   "bin": {
-    "install-peer": "./bin/index.js"
+    "install-peer": "./bin/install-peer.js"
   },
-  "typings": "dist/esm/index.d.ts",
+  "typings": "dist/index.d.ts",
   "scripts": {
     "clean": "npx rimraf dist",
     "prettier": "npx prettier --check --ignore-unknown ./**/*",
     "eslint": "npx eslint ./",
-    "bundle": "npx esbuild --bundle ./src/install.ts --outfile=bin/index.js --platform=node",
-    "cjs": "npx tsc --project tsconfig.cjs.json",
+    "bundle": "npx esbuild --bundle ./src/install.ts --outfile=bin/install-peer.js --platform=node",
     "esm": "npx tsc --project tsconfig.esm.json",
-    "build": "npm run prettier && npm run eslint && npm run clean && npm run bundle && npm run cjs && npm run esm",
+    "build": "npm run prettier && npm run eslint && npm run clean && npm run bundle && npm run esm",
     "prepack": "npm run build",
     "postversion": "git push --follow-tags"
   },
